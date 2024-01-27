@@ -32,7 +32,7 @@
   <form id="getFullUrlForm">
     <div class="form-group">
       <label for="shortenedCode">Enter Shortened URL Code:</label>
-      <input type="text" class="form-control" id="shortenedCode" required>
+      <input type="text" class="form-control" id="shortenedCode" placeholder="8hejBNh73jsb" required>
     </div>
     <button type="submit" class="btn btn-primary">Get Full URL</button>
   </form>
@@ -81,11 +81,13 @@
 
       $.ajax({
         type: 'GET',
-        url: `http://localhost:3000/${shortenedCode}`,
+        url: `http://localhost:3000/${shortenedCode}/noredirect`,
         success: function(response) {
           $('#fullUrl').attr('href', response.url);
           $('#fullUrl').text(response.url);
           $('#fullUrlResult').show();
+
+          $('#originalUrl').val(response.url);
         },
         error: function(error) {
           console.error('Error getting full URL:', error.responseJSON.message);

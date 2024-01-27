@@ -57,5 +57,17 @@ export class ShortenerController {
         const originalUrl = this.shortenerService.getOriginalUrl(code);
         return { "url": originalUrl };
     }
+
+    @Get(':code/:noredirect')
+    @ApiParam({ name: 'code', description: 'Shortened code to be redirected' })
+    getOriginalUrl(@Param('code') code: string): { url: string } 
+    {
+        if (!code ) {
+            throw new HttpException("Missing 'url' parameter in Body JSON", HttpStatus.BAD_REQUEST);
+        }
+
+        const originalUrl = this.shortenerService.getOriginalUrl(code);
+        return { "url": originalUrl };
+    }
 }
 

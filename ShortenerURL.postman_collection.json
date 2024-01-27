@@ -46,7 +46,7 @@
 			"response": []
 		},
 		{
-			"name": "getOriginal",
+			"name": "getOriginal_with_redirect",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -71,6 +71,38 @@
 					"port": "3000",
 					"path": [
 						"64f8a6defe298c20bd2bf8491b263223"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getOriginal",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/64f8a6defe298c20bd2bf8491b263223/noredirect",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"64f8a6defe298c20bd2bf8491b263223",
+						"noredirect"
 					]
 				}
 			},
