@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h1 class="mb-4">URL Shortener</h1>
+
+  <!-- Shorten URL Form -->
+  <form id="shortenUrlForm">
+    <div class="form-group">
+      <label for="originalUrl">Enter URL:</label>
+      <input type="url" class="form-control" id="originalUrl" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Shorten URL</button>
+  </form>
+
+  <div id="shortenedUrlResult" class="mt-4" style="display: none;">
+    <p>Shortened URL:</p>
+    <a href="#" target="_blank" rel="noopener noreferrer" id="shortenedUrl"></a>
+    <button class="btn btn-secondary mt-2" id="redirectButton">Redirect</button>
+  </div>
+
+  <hr>
+
+  <!-- Get Full URL Form -->
+  <form id="getFullUrlForm">
+    <div class="form-group">
+      <label for="shortenedCode">Enter Shortened URL Code:</label>
+      <input type="text" class="form-control" id="shortenedCode" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Get Full URL</button>
+  </form>
+
+  <div id="fullUrlResult" class="mt-4" style="display: none;">
+    <p>Full URL:</p>
+    <a href="#" target="_blank" rel="noopener noreferrer" id="fullUrl"></a>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Shorten URL Form Submission
+    $('#shortenUrlForm').submit(function(event) {
+      event.preventDefault();
+      const originalUrl = $('#originalUrl').val();
+
+      $.ajax({
+        type: 'POST',
+        url: 'http://localhost:3000/create',
+        contentType: 'application/json',
+        data: JSON.stringify({ url: originalUrl }),
+        success: function(response) {
+          $('#shortenedUrl').attr('href', response);
+          $('#shortenedUrl').text(response);
+          $('#shortenedUrlResult').show();
+        },
+        error: function(error) {
+          console.error('Error shortening URL:', error.responseJSON.message);
+        }
+      });
+    });
+
+    // Redirect Button Click
+    $('#redirectButton').click(function() {
+      const shortenedUrl = $('#shortenedUrl').attr('href');
+      window.open(shortenedUrl, '_blank');
+    });
+
+    // Get Full URL Form Submission
+    $('#getFullUrlForm').submit(function(event) {
+      event.preventDefault();
+      const shortenedCode = $('#shortenedCode').val();
+
+      $.ajax({
+        type: 'GET',
+        url: `http://localhost:3000/${shortenedCode}`,
+        success: function(response) {
+          $('#fullUrl').attr('href', response.url);
+          $('#fullUrl').text(response.url);
+          $('#fullUrlResult').show();
+        },
+        error: function(error) {
+          console.error('Error getting full URL:', error.responseJSON.message);
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
